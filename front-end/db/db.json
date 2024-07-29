@@ -1,0 +1,171 @@
+{
+  "login": [
+    {
+      "name": "Anil",
+      "password": "123",
+      "id": "5594"
+    },
+    {
+      "name": "Krishna",
+      "password": "321",
+      "id": "5595"
+    }
+  ],
+  "comments": [],
+  "groups": [
+    {
+      "group_name": "Weekend Parties",
+      "group_admin": "AK",
+      "id": "2a88"
+    },
+    {
+      "id": "87e3",
+      "group_name": "cricket",
+      "group_admin": "ind"
+    },
+    {
+      "id": "58b7",
+      "group_name": "Travelling",
+      "group_admin": "SA"
+    }
+  ],
+  "people": [
+    {
+      "id": "2a88",
+      "ppl": [
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "Shyam",
+          "age": "54",
+          "amount": "1245"
+        }
+      ]
+    },
+    {
+      "id": "87e3",
+      "ppl": [
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "Ram",
+          "age": "11",
+          "amount": "15"
+        }
+      ]
+    },
+    {
+      "ppl": [
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        }
+      ],
+      "id": "4a13"
+    },
+    {
+      "id": "58b7",
+      "ppl": [
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "RAM",
+          "age": "12",
+          "amount": "50000"
+        },
+        {
+          "name": "Krishna",
+          "age": "12",
+          "amount": "15000"
+        }
+      ]
+    }
+  ],
+  "chat_history": [
+    {
+      "sender": "Krishna",
+      "text": "Hello!",
+      "id": "1444"
+    },
+    {
+      "sender": "Anil",
+      "text": "Hi there!",
+      "id": "2e6b"
+    },
+    {
+      "sender": "Krishna",
+      "text": "How are you?",
+      "id": "1b0c"
+    },
+    {
+      "sender": "Ram",
+      "text": "I am good, thanks!",
+      "id": "07b2"
+    },
+    {
+      "id": "a9fc",
+      "text": "New Step",
+      "sender": "Anil"
+    },
+    {
+      "id": "b7aa",
+      "text": "My Step",
+      "sender": "Krishna"
+    },
+    {
+      "id": "0f74",
+      "text": "",
+      "sender": "Anil"
+    },
+    {
+      "id": "fec1",
+      "text": "not bad",
+      "sender": 1
+    }
+  ]
+}
