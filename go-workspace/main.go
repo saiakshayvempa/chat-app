@@ -63,7 +63,7 @@ func main() {
 		handlers.GroupDeatilsDelete(c)
 	})
 	r.POST("/GroupDeatilsInsert", func(c *gin.Context) {
-		log.Println("POST /register called")
+		log.Println("POST /GroupDeatilsInsert called")
 		handlers.GroupDeatilsInsert(c)
 	})
 	r.POST("/FetchGroupDetails", func(c *gin.Context) {

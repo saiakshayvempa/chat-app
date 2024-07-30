@@ -281,19 +281,21 @@ type AddPeopleRequest struct {
 	GroupId int `json:"group_id"`
 	Age int `json:"age"`
 	Name string `json:"name"`
-	Email int `json:"email"`
+	Email string `json:"email"`
 }
 
 func AddPeopleInsert (c *gin.Context) {
 	fmt.Println("293")
 	var req AddPeopleRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
+		fmt.Println("err-291",err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
-	fmt.Println("293")
+	fmt.Println("294")
 	dbConn, err := db.ConnectDB()
 	if err != nil {
+		fmt.Println("err-298",err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database"})
 		return
 	}
@@ -330,7 +332,7 @@ func RemovePeople (c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
-
+	fmt.Println("335")
 	dbConn, err := db.ConnectDB()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database"})
@@ -338,17 +340,18 @@ func RemovePeople (c *gin.Context) {
 	}
 	defer dbConn.Close()
 
-	var rowID int
+
 
 	
 	// query := "Delete INTO group_details Table (id, name, password) VALUES ($1, $2, $3)"
-	query := "DELETE FROM group_details WHERE group_id=$1 and people_id=$2;"
+	query := "DELETE FROM group_details WHERE group_id=? and people_id=?;"
 	_, err = dbConn.Exec(query,  req.GroupId, req.ID)
 	if err != nil {
+		fmt.Println("350->err",err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to execute query in people"})
 		return
 	}
-	fmt.Println("peopleID",rowID)
+
 
 	
 

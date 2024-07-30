@@ -18,7 +18,7 @@ import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Register from "./components/Register";
 import Protected from "./components/Protected";
-
+import GroupChat from "./components/GroupChat";
 
 function App() {
   return (
@@ -33,6 +33,7 @@ function App() {
             <Route path="/create" element={<GroupCreate />} />
             <Route path="/detail" element={<GroupDetail />} />
             <Route path="/search" element={<GroupSearch />} />
+            <Route path="/GroupChat" element={<GroupChat />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/update/:id" element={<GroupUpdate />} />
             <Route path="/detail/:id" element={<GroupDetail />} />
