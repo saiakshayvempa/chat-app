@@ -146,9 +146,10 @@ func GroupMount(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
-
+	fmt.Println("149")
 	dbConn, err := db.ConnectDB()
 	if err != nil {
+		fmt.Println("152 err",err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database"})
 		return
 	}
@@ -156,24 +157,26 @@ func GroupMount(c *gin.Context) {
 
 	query := "SELECT id, group_name, admin FROM `groups` where id = ?"
 	rows, err := dbConn.Query(query, req.ID)
-
+	fmt.Println("160")
 	if err != nil {
+		fmt.Println("162 err",err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to execute query"})
 		return
 	}
 	defer rows.Close()
-
+	fmt.Println("167")
 	var data []map[string]interface{}
 	for rows.Next() {
 		var id int
 		var group_name,admin string
 		err := rows.Scan(&id, &group_name, &admin)
 		if err != nil {
+			fmt.Println("174 err",err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read row"})
 			return
 		}
 		data = append(data, map[string]interface{}{"id":id,"group_name": group_name, "group_admin": admin})
 	}
-
+	fmt.Println("180")
 	c.JSON(http.StatusOK, data)
 }
