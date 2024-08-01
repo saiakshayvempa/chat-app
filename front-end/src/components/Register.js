@@ -5,7 +5,7 @@ import NavBarMenu from "./NavBarMenu";
 import Logo from "../assets/images/logo.png";
 import backgroundImage from "../assets/images/background.jpg";
 import registerImage from "../assets/images/signup.jpg";
-
+import Divider from '@mui/material/Divider';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -80,43 +80,67 @@ class Register extends Component {
 
                     </div>
                     <div className='right-register' >
-                        <div className='right-box'>
+                        <div className='right-box' >
+                            <br /> <br />
                             <p className='NameText'>Always stay connected .....</p><br />
                             <img
                                 className="small-logo"
                                 src={Logo}
                                 alt="logo"
                             />
-                            <Form>
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <Form.Label className="left-align-label">Email address</Form.Label>
-                                    <Form.Control type="email" onChange={(event) => { this.setState({ email: event.target.value }) }} placeholder="Enter email" />
+                            <br /> <br />
+                           
 
-                                </Form.Group>
+                            <input
+                                type="text"
+                                placeholder="Enter the Name"
+                                name="email"
+                                onChange={(event) => { this.setState({ email: event.target.value }) }}
+                            /> <br />
+                            <br />
 
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label className="left-align-label">Password</Form.Label>
-                                    <Form.Control type="password" onChange={(event) => this.setState({ password: event.target.value })} placeholder="Password" />
-                                    <Form.Text className="custom-text">
-                                        We'll never share your password with anyone else.
-                                    </Form.Text>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label className="left-align-label">Name</Form.Label>
-                                    <Form.Control type="text" onChange={(event) => { this.setState({ name: event.target.value }) }} placeholder="Enter your full name." />
+                            <input
+                                type="password"
+                                placeholder="Enter the Password"
+                                name="password"
+                                onChange={(event) => this.setState({ password: event.target.value })}
+                            /> <br />
+                            <br />
 
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label className="left-align-label">Age</Form.Label>
-                                    <Form.Control type="text" onChange={(event) => { this.setState({ age: event.target.value }) }} placeholder="Enter your age aps per your passport." />
+                            <input
+                                type="text"
+                                placeholder="Enter your full name."
+                                name="user"
+                                onChange={(event) => { this.setState({ name: event.target.value }) }}
+                            /> <br />
+                            <br />
 
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                                    <Form.Check className="form-label" type="checkbox" label="Send Newsletter's to my Email" />
-                                </Form.Group>
+                            <input
+                                type="text"
+                                placeholder="Enter your age aps per your passport"
+                                name="age"
+                                onChange={(event) => { this.setState({ age: event.target.value }) }}
+                            /> <br />
+                            <br />
 
-                            </Form>
+
+
                             <button onClick={() => { this.create() }} className="btn btn-primary">Register</button>
+
+                            <Divider sx={{
+                                color: 'white',
+                                '&::before, &::after': {
+                                    borderColor: 'white'
+                                },
+                                '& .MuiDivider-wrapper': {
+                                    backgroundColor: 'rgb(87, 178, 194)',
+                                    padding: '0 10px',
+                                    color: 'white'
+                                }
+                            }}>
+                                or
+                            </Divider>
+
                             <p className='NameText'>Already on Chat-App!</p><br />
                             <Link to={"/login"} className="btn btn-primary">Login</Link><br /><br />
                         </div>

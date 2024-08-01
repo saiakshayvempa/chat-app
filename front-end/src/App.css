@@ -154,7 +154,7 @@ span{
 /* Register Page CSS  */
 .left-register{
   width:30%;
-  height: 100vh;
+  height: 90vh;
 
   float:right;
   background-size: cover; /* Ensure the image covers the entire element */

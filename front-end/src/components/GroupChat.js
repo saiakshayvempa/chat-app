@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBarMenu from "./NavBarMenu"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faPlus, faEdit, faPen, faTrash, faComment,faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faPlus, faEdit, faPen, faTrash, faComment, faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 
-const Dropdown = ({ handleSelect, options=[], selectedPerson }) => {
+const Dropdown = ({ handleSelect, options = [], selectedPerson }) => {
     return (
         <div>
             <select className='form-select' onChange={handleSelect}>
@@ -42,7 +42,7 @@ class GroupChat extends Component {
             FriendName: null,
             GroupID: null,
             GroupName: null,
-            group_admin:null,
+            group_admin: null,
             show: false,
             listDetails: [],
             options: [],
@@ -55,54 +55,74 @@ class GroupChat extends Component {
     componentDidMount() {
         this.getData();
         this.getChatMessages();
-        
+
 
 
     }
 
-    groupMount(){
+    groupMount() {
         const groupId = this.state.GroupID;
-        console.warn("gruoo_id",groupId);
+        console.warn("gruoo_id", groupId);
 
         fetch('http://localhost:5100/GroupMount', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: groupId}) // Example payload
-        }).then((response)=>{
-            response.json().then((result)=>{
-                console.warn("69 group chat result",result)
+            body: JSON.stringify({ id: groupId }) // Example payload
+        }).then((response) => {
+            response.json().then((result) => {
+                console.warn("69 group chat result", result)
                 this.setState({
-                    group_name:result.group_name,
-                    group_admin:result.group_admin,
-                    id:result.id
+                    group_name: result.group_name,
+                    group_admin: result.group_admin,
+                    id: result.id
                 })
             })
         })
-        
+
     }
 
-    
+
     update() {
-        
+
         const groupId = this.state.GroupID;
-        console.warn("gruoo_id",groupId);
-        console.warn("this.state for uodate",this.state)
-        fetch('http://localhost:5100/groupsUpdate',{
-            method:"POST",
-            header:{
-                'Content-Type':'application/json'
+        console.warn("gruoo_id", groupId);
+        console.warn("this.state for uodate", this.state)
+        fetch('http://localhost:5100/groupsUpdate', {
+            method: "POST",
+            header: {
+                'Content-Type': 'application/json'
             },
-            body : JSON.stringify({group_admin:this.state.group_admin,group_name: this.state.group_name,id:groupId})
-        }).then((result)=>{
-            result.json().then(resp=>{
+            body: JSON.stringify({ group_admin: this.state.group_admin, group_name: this.state.group_name, id: groupId })
+        }).then((result) => {
+            result.json().then(resp => {
                 console.warn(resp)
-                alert("This Group Info has been updated")
+                // alert("This Group Info has been updated")
+                this.handleClose();
+                this.getData();
             })
-            
+
         })
+      
     }
+
+    deleteGroup() {
+        const groupId = this.state.GroupID;
+        console.warn("gruoo_id", groupId);
+        fetch('http://localhost:5100/GroupDelete', {
+            method: "POST",
+            body: JSON.stringify({ id: groupId })
+        }).then((result) => {
+            result.json().then(resp => {
+                console.warn(resp);
+                alert("This Group Info has been deleted");
+                this.handleClose();
+                this.getData();
+            });
+        });
+    }
+
 
     getData() {
         fetch("http://localhost:5100/groups", {
@@ -171,6 +191,7 @@ class GroupChat extends Component {
                 console.warn(resp)
                 // alert("This Group Info has been deleted")
                 this.getDeatilsData();
+                this.fetchCurrentPeople()
                 // this.getData()
             })
 
@@ -289,6 +310,7 @@ class GroupChat extends Component {
             .catch(error => {
                 console.error("Error updating data: ", error);
             });
+        this.fetchCurrentPeople()
     };
 
     handleShow = () => {
@@ -314,7 +336,7 @@ class GroupChat extends Component {
     render() {
         const { list, listDetails, loading, message, chatMessages, options, selectedPerson, dropdownValue } = this.state;
         const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id;
-        console.warn('317 options',options)
+        console.warn('317 options', options)
         return (
             <div>
                 <NavBarMenu />
@@ -326,12 +348,13 @@ class GroupChat extends Component {
                         <Modal.Title>{this.state.GroupName}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Woohoo, you are reading this text in a modal!
+
                         <div>
-                            <p>Group Name</p>
-                            <input onChange={(event) => { this.setState({ group_name: event.target.value }) }} placeholder='Group Name' value={this.state.group_name} /><br />
-                            <input onChange={(event) => { this.setState({ group_admin: event.target.value }) }} placeholder='Group Admin' value={this.state.group_admin} /><br />
-                            <button onClick={() => { this.update() }}> Group Update <FontAwesomeIcon icon={faCoffee} /></button>
+                            <p>Do you wish to change the group name</p>
+                            <input onChange={(event) => { this.setState({ group_name: event.target.value }) }} placeholder='Group Name' value={this.state.group_name} />
+
+                            <span onClick={() => { this.update() }}><FontAwesomeIcon icon={faCoffee} /></span>
+                            <button onClick={() => { this.deleteGroup() }}> Group Delete <FontAwesomeIcon icon={faTrash} /></button>
                         </div>
                         <Table stripped bordered hover>
                             <thead>
@@ -369,11 +392,9 @@ class GroupChat extends Component {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
-                            Close
-                        </Button>
+
                         <Button variant="primary" onClick={this.handleClose}>
-                            Save Changes
+                            Close
                         </Button>
                     </Modal.Footer>
                 </Modal>
