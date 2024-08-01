@@ -114,6 +114,7 @@ span{
   float: left;
 }
 
+
 /* Add clearfix to the container to handle floating elements */
 .text-window::after {
   content: "";
@@ -125,6 +126,79 @@ span{
   color: #61dafb;
 }
 
+/* Login Page CSS  */
+.left-login{
+  width:30%;
+  height: 90vh;
+
+  float:right;
+  background-color: rgb(118, 147, 236);
+}
+.small-logo {
+  width: 100px; /* Adjust width as needed */
+  height: auto; /* Keep aspect ratio */
+}
+.left-login button{
+  width: 20%;
+}
+.right-login {
+  width: 70%;
+  height: 90vh;
+  float: right;
+
+  background-size: cover; /* Ensure the image covers the entire element */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
+/* Register Page CSS  */
+.left-register{
+  width:30%;
+  height: 100vh;
+
+  float:right;
+  background-size: cover; /* Ensure the image covers the entire element */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+ 
+}
+
+.left-register button{
+  width: 20%;
+}
+.right-register button{
+  width: 20%;
+}
+.right-register {
+  width: 70%;
+  height: 100vh;
+  float: right;
+  background-color: rgb(118, 147, 236);
+}
+
+.right-box {
+  width: 50%;
+  height: auto;
+  margin-top: 5%;
+  margin-left: 20%;
+  float: center;
+  background-color: rgb(87, 178, 194);
+}
+
+.form-label {
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.custom-text {
+  color: #ffffff; /* Adjust the color as needed */
+}
+
+.left-align-label {
+  text-align: left;
+  display: block; /* Ensures that the label is displayed as a block-level element */
+}
+
 /* Home Page CSS  */
 .left-home{
   width:70%;
@@ -132,12 +206,17 @@ span{
   float:right;
   background-color: royalblue;
 }
+.left-home button{
+  width: 20%;
+}
 .right-home{
   width:30%;
   length:60px;
   float:right;
   background-color: red;
 }
+
+
 
 /* card home */
 

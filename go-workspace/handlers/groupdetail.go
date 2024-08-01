@@ -269,7 +269,9 @@ func FetchGroupDetails(c *gin.Context) {
 	}
 
 	if len(data) == 0 {
-		c.JSON(http.StatusOK, gin.H{"message": "No data found", "data": data})
+		fmt.Println("272 data",data)
+		// c.JSON(http.StatusOK, gin.H{"message": "No data found", "data": data})
+		c.JSON(http.StatusOK, data)
 	} else {
 		c.JSON(http.StatusOK, data)
 	}

@@ -3,7 +3,8 @@ import NavBarMenu from "./NavBarMenu";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
+import Logo from "../assets/images/logo.png";
+import backgroundImage  from "../assets/images/background.jpg";
 function withRouter(Component) {
     function ComponentWithRouterProp(props) {
         let location = useLocation();
@@ -53,54 +54,47 @@ class Login extends Component {
         return (
             <div>
                 <NavBarMenu />
-                
+
                 <div>
-                    
-                    <input
-                        type="text"
-                        placeholder="Enter the Name"
-                        name="user"
-                        onChange={(event) => this.setState({ name: event.target.value })}
-                    /><br /><br />
-                    <input
-                        type="password"
-                        placeholder="Enter the Password"
-                        name="password"
-                        onChange={(event) => this.setState({ password: event.target.value })}
-                    /><br /><br />
-                    <button onClick={() => { this.login() }}  className="btn btn-primary">Login</button>
-                
-                  
-                    <Link to={"/register"} className="btn btn-primary">SignUp</Link>
-                </div>
-                <div>
-                    <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
-                        <div className="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        </div>
-                        <div className="carousel-inner">
-                            <div className="carousel-item active">
-                                <img className="d-block w-100" src="https://picsum.photos/id/237/800/400" alt="First slide" />
-                            </div>
-                            <div className="carousel-item">
-                                <img className="d-block w-100" src="https://picsum.photos/id/238/800/400" alt="Second slide" />
-                            </div>
-                            <div className="carousel-item">
-                                <img className="d-block w-100" src="https://picsum.photos/id/239/800/400" alt="Third slide" />
-                            </div>
-                        </div>
-                        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Previous</span>
-                        </button>
-                        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Next</span>
-                        </button>
+                    <div className='left-login'>
+                        
+                        <br /><br />
+                        <p className='NameText'>SignIn to Stay connected with everyone</p><br /><br />
+                        <img
+                            className="small-logo"
+                            src={Logo}
+                            alt="logo"
+                        />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                        <input
+                            type="text"
+                            placeholder="Enter the Name"
+                            name="user"
+                            onChange={(event) => this.setState({ name: event.target.value })}
+                        /><br /><br />
+                        <input
+                            type="password"
+                            placeholder="Enter the Password"
+                            name="password"
+                            onChange={(event) => this.setState({ password: event.target.value })}
+                        /><br /><br />
+                        <button onClick={() => { this.login() }} className="btn btn-primary">Login</button><br /><br />
+
+                        <p className='NameText'>Don't have an Account.....?</p><br />
+                        <Link to={"/register"} className="btn btn-primary">SignUp</Link>
                     </div>
+                    <div className='right-login'  style={{ backgroundImage: `url(${backgroundImage})` }}>
+                    </div>
+
                 </div>
+
+
+
+
             </div>
         );
     }

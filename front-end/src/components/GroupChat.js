@@ -10,12 +10,12 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 
-const Dropdown = ({ handleSelect, options, selectedPerson }) => {
+const Dropdown = ({ handleSelect, options=[], selectedPerson }) => {
     return (
         <div>
             <select className='form-select' onChange={handleSelect}>
                 <option value="">Select a person</option>
-                {options.map(option => (
+                {options?.map(option => (
                     <option key={option.id} value={option.id}>{option.name}</option>
                 ))}
             </select>
@@ -314,6 +314,7 @@ class GroupChat extends Component {
     render() {
         const { list, listDetails, loading, message, chatMessages, options, selectedPerson, dropdownValue } = this.state;
         const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id;
+        console.warn('317 options',options)
         return (
             <div>
                 <NavBarMenu />

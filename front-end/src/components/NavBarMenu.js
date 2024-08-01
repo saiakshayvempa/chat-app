@@ -30,11 +30,13 @@ class NavBarMenu extends Component {
             <Nav.Link href="#list"><Link to="/list"><FontAwesomeIcon icon={faList} color ="Black"/>Groups</Link></Nav.Link>
             <Nav.Link href="#search"><Link to="/search"><FontAwesomeIcon icon={faSearch} color ="Black"/>People</Link></Nav.Link>
             <Nav.Link href="#GroupChat"><Link to="/GroupChat"><FontAwesomeIcon icon={faSearch} color ="Black"/>GroupChats</Link></Nav.Link>
+            {/* <Nav.Link href="#signin"><Link to="/signin"><FontAwesomeIcon icon={faSearch} color ="Black"/>SignIn</Link></Nav.Link> */}
             {
                 localStorage.getItem('login')?
                 <Nav.Link href="#logout"><Link to="/logout"><FontAwesomeIcon icon={faUser} color ="Black"/>Logout</Link></Nav.Link>
                 :
                 <Nav.Link href="#login"><Link to="/login"><FontAwesomeIcon icon={faUser} color ="Black"/>Login</Link></Nav.Link>
+                
             }
             
           {/* <Link to="/list">GroupList</Link>
