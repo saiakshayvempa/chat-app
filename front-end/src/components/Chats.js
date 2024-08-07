@@ -1,24 +1,35 @@
 import React, { Component } from 'react';
-import NavBarMenu from "./NavBarMenu"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faPlus, faEdit, faPen, faTrash, faComment } from '@fortawesome/free-solid-svg-icons'
+import NavBarMenu from "./NavBarMenu";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear, faEdit, faPen, faTrash, faComment } from '@fortawesome/free-solid-svg-icons';
 import { Table } from 'react-bootstrap';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+import { Link } from 'react-router-dom';
 
-class GroupSearch extends Component {
+class Chats extends Component {
     constructor() {
         super();
         this.state = {
+            msg: "",
             list: [],
             PeopleID: null,
             FriendId: null,
-            FriendName: null
-
+            FriendName: null,
+            showEmojiPicker: false,
+            stickers: ['😀', '😂', '😍', '👍'], // Example sticker list
+            showStickerPicker: false,
+            chatMessages: [],
+            loading: false,
+            error: null,
+           
         };
     }
 
     componentDidMount() {
         this.getData();
         this.getChatMessages();
+
 
     }
 
@@ -38,7 +49,6 @@ class GroupSearch extends Component {
                 return response.json();
             })
             .then((result) => {
-                console.warn(result);
                 this.setState({ list: result });
             })
             .catch((error) => {
@@ -46,21 +56,17 @@ class GroupSearch extends Component {
             });
     }
 
-    getChatMessages(frn_id, name) {
+    getChatMessages = (frn_id, name) => {
+        if (!frn_id || !name) return;
 
-        console.warn("getChatMessages - frn_id", frn_id);
-
-        const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id
-        this.state.FriendId = frn_id
-        this.state.FriendName = name
-
-        console.warn("PeopleID", frn_id === this.state.FriendId);
+        this.setState({ FriendId: frn_id, FriendName: name, loading: true });
+        const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id;
 
         fetch('http://localhost:5100/Chats', {
             method: "POST",
-            // headers: {
-            //     'Content-Type': 'application/json'
-            // },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ frn_id: frn_id, people_id: PeopleID }) // Example payload
         })
             .then((response) => {
@@ -71,7 +77,6 @@ class GroupSearch extends Component {
             })
             .then((resp) => {
                 this.setState({ chatMessages: resp, loading: false });
-                console.warn("130", resp);
             })
             .catch((error) => {
                 console.error("Error fetching chat messages: ", error);
@@ -79,48 +84,70 @@ class GroupSearch extends Component {
             });
     }
 
-    send() {
-        console.warn("gruoo_id", this.props.router?.params.id);
+    send = () => {
         const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id;
-        console.warn("78", this.state)
-        console.warn("PeopleID", PeopleID);
-        console.warn("text", this.state.msg)
         fetch('http://localhost:5100/Send', {
-            method: "Post",
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            // body : JSON.stringify(this.state)
             body: JSON.stringify({ "text": this.state.msg, "sender_id": this.state.FriendId, "people_id": PeopleID })
-        }).then((result) => {
-            result.json().then(resp => {
-                console.warn(resp)
-                alert("Message has beeb sent")
-            })
-
         })
+            .then((result) => result.json())
+            .then(resp => {
+                this.setState({ msg: '' });
+                this.getChatMessages(this.state.FriendId, this.state.FriendName);
+            })
+            .catch(error => {
+                console.error("Error sending message: ", error);
+            });
     }
 
+    addEmoji = (emoji) => {
+        this.setState({ msg: this.state.msg + emoji.native });
+    };
+
+    toggleEmojiPicker = () => {
+        this.setState({ showEmojiPicker: !this.state.showEmojiPicker });
+    };
+
+    addSticker = (sticker) => {
+        this.setState({ msg: this.state.msg + sticker });
+    };
+
+    toggleStickerPicker = () => {
+        this.setState({ showStickerPicker: !this.state.showStickerPicker });
+    };
+
+    inputChange = (event) => {
+        if (event.key === "Enter") {
+            this.send();
+        } else {
+            this.setState({ msg: event.target.value });
+        }
+    }
+
+    
     render() {
-        const { list, loading, message, chatMessages } = this.state;
+        const { list, loading, chatMessages, msg, showEmojiPicker } = this.state;
         const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id;
+
         return (
             <div>
                 <NavBarMenu />
-
-                {/* <h1>Keep in touch with your friends..... </h1> */}
-                {/* <Link to={"/addpeople/" + this.props.router?.params.id}><FontAwesomeIcon icon={faPlus} color="Green" /></Link> */}
                 <div className='chat'>
                     <div className='bar'>
                         <p className='NameText'>{this.state.FriendName}</p>
+                        <Link to={"/calls/" + this.state.FriendId}><FontAwesomeIcon icon={faComment} color="White" /></Link>
                     </div>
+
                     <div className='text-window'>
                         {chatMessages?.map((message, index) => (
                             <div
                                 key={index}
                                 className={`message ${message.sender_id !== PeopleID ? 'right' : 'left'}`}
                             >
-                                <p className='chatText'> {message.text}</p>
+                                <p className='chatText'>{message.text}</p>
                             </div>
                         ))}
                     </div>
@@ -128,46 +155,46 @@ class GroupSearch extends Component {
                         <input
                             type="text"
                             placeholder="Type the message here ....."
-                            msg="msg"
-                            onChange={(event) => this.setState({ msg: event.target.value })}
+                            onChange={(e) => this.setState({ msg: e.target.value })}
+                            onKeyUp={this.inputChange}
+                            value={msg}
                         />
-                        <button onClick={() => { this.send() }}>Send</button>
+                        <div style={{ position: "absolute", bottom: "10.5vh" }}>
+                            {showEmojiPicker && <Picker data={data} onEmojiSelect={this.addEmoji} />}
+                        </div>
+                        <button style={{ width: "5%", backgroundColor: "white", border: "1px solid black" }} onClick={this.toggleEmojiPicker}>😊</button>
+                        <button onClick={this.send}>Send</button>
                     </div>
                 </div>
                 {loading ? (
-                    <p>Please Wait.....</p>
+                    <p>Please wait...</p>
                 ) : (
                     <div className='non-chat'>
-                        {message ? (
-                            <p>{message}</p>
+                        {this.state.error ? (
+                            <p>{this.state.error}</p>
                         ) : (
                             <div>
                                 <div className='bar1'>
                                     <p className='NameText'>Chats</p>
                                 </div>
                                 <Table stripped bordered hover>
-
                                     <tbody>
                                         {list?.map((item, i) => (
                                             <tr key={i} className={item.id === this.state.FriendId ? 'table-primary' : ''}>
-
                                                 <td onClick={() => this.getChatMessages(item.id, item.name)}>{item.name}</td>
-
-
+                                                
                                             </tr>
                                         ))}
                                     </tbody>
                                 </Table>
-                                <div className='non-chat'>
-
-                                </div>
                             </div>
                         )}
                     </div>
                 )}
+                
             </div>
         );
     }
 }
 
-export default GroupSearch;
+export default Chats;

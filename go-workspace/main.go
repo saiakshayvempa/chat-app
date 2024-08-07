@@ -7,7 +7,9 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
 )
+
 
 func main() {
 	r := gin.Default()
@@ -102,4 +104,6 @@ func main() {
 	if err := r.Run(":5100"); err != nil {
 		log.Fatalf("Could not start server: %v\n", err)
 	}
+
+
 }

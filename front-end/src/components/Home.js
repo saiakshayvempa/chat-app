@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import NavBarMenu from "./NavBarMenu";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDribbble, faTwitter, faLinkedin, faFacebook } from '@fortawesome/free-brands-svg-icons';
-import { Link } from 'react-router-dom';
+
 
 import Carousel from 'react-bootstrap/Carousel';
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';

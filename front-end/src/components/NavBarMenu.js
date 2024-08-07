@@ -13,7 +13,7 @@ import {
 
 // import NavBarMenu from "./NavBarMenu"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faHome,faComments,faComment, faRightToBracket,faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import {faHome,faComment, faRightToBracket,faRightFromBracket,faUsers } from '@fortawesome/free-solid-svg-icons'
 
 class NavBarMenu extends Component {
 
@@ -27,10 +27,10 @@ class NavBarMenu extends Component {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto w-100">
                 <Nav.Link  href="#home"><Link className='nav-link' to="/"><FontAwesomeIcon icon={faHome} color="Black" />Home</Link></Nav.Link>
-                <Nav.Link href="#list"><Link className='nav-link'to="/list"><FontAwesomeIcon icon={faList} color="Black" />Groups</Link></Nav.Link>
-                <Nav.Link href="#search"><Link className='nav-link'to="/search"><FontAwesomeIcon icon={faComment} color="Black" />People</Link></Nav.Link>
-                <Nav.Link href="#GroupChat"><Link className='nav-link' to="/GroupChat"><FontAwesomeIcon icon={faComments} color="Black" />GroupChats</Link></Nav.Link>
-                {/* <Nav.Link href="#signin"><Link to="/signin"><FontAwesomeIcon icon={faSearch} color ="Black"/>SignIn</Link></Nav.Link> */}
+                {/* <Nav.Link href="#list"><Link className='nav-link'to="/list"><FontAwesomeIcon icon={faList} color="Black" />Groups</Link></Nav.Link> */}
+                <Nav.Link href="#chats"><Link className='nav-link'to="/chats"><FontAwesomeIcon icon={faComment} color="Black" />People</Link></Nav.Link>
+                <Nav.Link href="#GroupChat"><Link className='nav-link' to="/GroupChat"><FontAwesomeIcon icon={faUsers} color="Black" />GroupChats</Link></Nav.Link>
+             
                 {
                   localStorage.getItem('login') ?
                     <Nav.Link style={{marginLeft:'auto'}}href="#logout"><Link className='nav-link' to="/logout"><FontAwesomeIcon icon={faRightFromBracket} color="Black" />Logout</Link></Nav.Link>

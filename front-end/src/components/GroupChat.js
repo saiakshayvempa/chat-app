@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import NavBarMenu from "./NavBarMenu"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faPlus, faEdit, faPen, faTrash, faComment, faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faTrash, faFloppyDisk, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
-
-import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 
 
 const Dropdown = ({ handleSelect, options = [], selectedPerson }) => {
@@ -48,6 +48,15 @@ class GroupChat extends Component {
             options: [],
             selectedPerson: null,
             dropdownValue: '',
+            createShow: false,
+            chatMessages: [],
+            msg: '',
+            showEmojiPicker: false,
+            stickers: ['😀', '😂', '😍', '👍'], // Example sticker list
+            showStickerPicker: false,
+            chatMessages: [],
+            loading: false,
+            error: null
 
         };
     }
@@ -87,7 +96,7 @@ class GroupChat extends Component {
     update() {
 
         const groupId = this.state.GroupID;
-        console.warn("gruoo_id", groupId);
+        console.warn("group_id", groupId);
         console.warn("this.state for uodate", this.state)
         fetch('http://localhost:5100/groupsUpdate', {
             method: "POST",
@@ -104,7 +113,7 @@ class GroupChat extends Component {
             })
 
         })
-      
+
     }
 
     deleteGroup() {
@@ -116,11 +125,30 @@ class GroupChat extends Component {
         }).then((result) => {
             result.json().then(resp => {
                 console.warn(resp);
-                alert("This Group Info has been deleted");
+                // alert("This Group Info has been deleted");
                 this.handleClose();
                 this.getData();
             });
         });
+    }
+    createGroup() {
+        fetch('http://localhost:5100/GroupInsert', {
+            method: "Post",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state)
+        }).then((result) => {
+            result.json().then(resp => {
+                console.warn(resp)
+                // alert("new Group has been created")
+                // this.props.router.navigate('/list'); //  Navigate to login
+                this.createClose();
+                this.getData();
+            })
+
+        })
+
     }
 
 
@@ -202,8 +230,9 @@ class GroupChat extends Component {
     getChatMessages = (id, group_name) => {
 
         console.warn("group_id", id);
-        this.state.GroupID = id
-        this.state.GroupName = group_name
+        this.setState({ GroupID: id, GroupName: group_name })
+        // this.state.GroupID = id
+        // this.state.GroupName = group_name
         // const groupId = parseInt(this.props.router?.params.id, 0);
 
         fetch('http://localhost:5100/GroupChats', {
@@ -229,7 +258,7 @@ class GroupChat extends Component {
             });
     }
 
-    send() {
+    send = () => {
 
         const groupId = this.state.GroupID
         console.warn("gruoo_id", groupId);
@@ -238,7 +267,7 @@ class GroupChat extends Component {
 
         const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id
         fetch('http://localhost:5100/GroupSend', {
-            method: "Post",
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -247,7 +276,10 @@ class GroupChat extends Component {
         }).then((result) => {
             result.json().then(resp => {
                 console.warn(resp)
-                alert("Message has beeb sent")
+                // alert("Message has beeb sent")
+                this.setState({ msg: '' }); // Clear the message input field
+                this.getChatMessages(this.state.GroupID, this.state.GroupName)
+
             })
 
         })
@@ -261,7 +293,7 @@ class GroupChat extends Component {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ "id": groupId })
+            body: JSON.stringify({ id: groupId })
         })
             .then(result => result.json())
             .then(resp => {
@@ -272,7 +304,7 @@ class GroupChat extends Component {
             });
     }
 
-    create = () => {
+    addPeople = () => {
 
         const { selectedPerson } = this.state;
 
@@ -306,11 +338,12 @@ class GroupChat extends Component {
                 console.warn(resp);
                 // this.props.router.navigate(`/detail/${this.props.router.params.id}`);
                 this.getDeatilsData();
+                this.fetchCurrentPeople()
             })
             .catch(error => {
                 console.error("Error updating data: ", error);
             });
-        this.fetchCurrentPeople()
+        // this.fetchCurrentPeople()
     };
 
     handleShow = () => {
@@ -321,10 +354,23 @@ class GroupChat extends Component {
         this.fetchCurrentPeople();
         this.groupMount();
     }
+    handleCreate = () => {
+        console.warn("330,handleCreate")
+        this.setState({ createShow: true })
+        // console.warn("332,createShow",createShow)
+        // this.state.show=true
+        // this.getDeatilsData();
+        // this.fetchCurrentPeople();
+        // this.groupMount();
+    }
 
     handleClose = () => {
         console.warn("handle close")
         this.setState({ show: false })
+    }
+    createClose = () => {
+        console.warn("handle close")
+        this.setState({ createShow: false })
     }
 
     handleSelect = (e) => {
@@ -333,8 +379,33 @@ class GroupChat extends Component {
         this.setState({ dropdownValue: selectedId, selectedPerson });
     };
 
+    addEmoji = (emoji) => {
+        this.setState({ msg: this.state.msg + emoji.native });
+    };
+
+    toggleEmojiPicker = () => {
+        this.setState({ showEmojiPicker: !this.state.showEmojiPicker });
+    };
+
+    addSticker = (sticker) => {
+        this.setState({ msg: this.state.msg + sticker });
+    };
+
+    toggleStickerPicker = () => {
+        this.setState({ showStickerPicker: !this.state.showStickerPicker });
+    };
+
+    inputChange = (event) => {
+        if (event.key === "Enter") {
+            this.send();
+        } else {
+            this.setState({ msg: event.target.value });
+        }
+    }
+
     render() {
-        const { list, listDetails, loading, message, chatMessages, options, selectedPerson, dropdownValue } = this.state;
+        const { list, listDetails, loading, message, chatMessages, options, selectedPerson, dropdownValue, msg,showEmojiPicker, stickers, showStickerPicker, error  } = this.state;
+        // const { list, loading, chatMessages, msg, showEmojiPicker, stickers, showStickerPicker, error } = this.state;
         const PeopleID = JSON.parse(localStorage.getItem('login'))[0].people_id;
         console.warn('317 options', options)
         return (
@@ -353,7 +424,7 @@ class GroupChat extends Component {
                             <p>Do you wish to change the group name</p>
                             <input onChange={(event) => { this.setState({ group_name: event.target.value }) }} placeholder='Group Name' value={this.state.group_name} />
 
-                            <span onClick={() => { this.update() }}><FontAwesomeIcon icon={faCoffee} /></span>
+                            <span onClick={() => { this.update() }}><FontAwesomeIcon icon={faFloppyDisk} /></span>
                             <button onClick={() => { this.deleteGroup() }}> Group Delete <FontAwesomeIcon icon={faTrash} /></button>
                         </div>
                         <Table stripped bordered hover>
@@ -388,7 +459,7 @@ class GroupChat extends Component {
                                     selectedPerson={selectedPerson}
                                 />
                             </div>
-                            <button onClick={this.create}>Add People</button>
+                            <button onClick={this.addPeople}>Add People</button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -399,6 +470,34 @@ class GroupChat extends Component {
                     </Modal.Footer>
                 </Modal>
 
+                {/* Create new group model */}
+
+                {/* <Button variant="primary" onClick={this.handleCreate}>
+                    Launch static backdrop modal
+                </Button> */}
+
+                <Modal
+                    show={this.state.createShow}
+                    onHide={this.createClose}
+                // backdrop="static"
+                // keyboard={false}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Modal title</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Group Name :</p>
+                        <input onChange={(event) => { this.setState({ group_name: event.target.value }) }} placeholder='Group Name' /><br />
+                        {/* <input onChange={(event) => { this.setState({ group_admin: event.target.value }) }} placeholder='Group Admin' /><br /> */}
+                        {/* <button onClick={() => { this.createGroup() }}>Add Group</button> */}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        {/* <Button variant="secondary" onClick={this.createClose}>
+                            Close
+                        </Button> */}
+                        <Button onClick={() => { this.createGroup() }} variant="primary">Greate Group</Button>
+                    </Modal.Footer>
+                </Modal>
 
                 {/* <h1>Keep in touch with your friends..... </h1> */}
                 {/* <Link to={"/addpeople/" + this.props.router?.params.id}><FontAwesomeIcon icon={faPlus} color="Green" /></Link> */}
@@ -419,13 +518,18 @@ class GroupChat extends Component {
                         ))}
                     </div>
                     <div className='send'>
-                        <input
+                    <input
                             type="text"
                             placeholder="Type the message here ....."
-                            msg="msg"
-                            onChange={(event) => this.setState({ msg: event.target.value })}
+                            onChange={(e) => this.setState({ msg: e.target.value })}
+                            onKeyUp={this.inputChange}
+                            value={msg}
                         />
-                        <button onClick={() => { this.send() }}>Send</button>
+                        <div style={{ position: "absolute", bottom: "10.5vh" }}>
+                            {showEmojiPicker && <Picker data={data} onEmojiSelect={this.addEmoji} />}
+                        </div>
+                        <button style={{ width: "5%", backgroundColor: "white", border: "1px solid black" }} onClick={this.toggleEmojiPicker}>😊</button>
+                        <button onClick={this.send}>Send</button>
                     </div>
                 </div>
                 {loading ? (
@@ -438,7 +542,8 @@ class GroupChat extends Component {
                             <div>
                                 <div className='bar1'>
                                     <p className='NameText'>Group Chats</p>
-                                    <Link to={"/create/"}><FontAwesomeIcon icon={faPlus} color="White" /></Link>
+                                    {/* <Link to={"/create/"}><FontAwesomeIcon icon={faUserPlus} color="White" /></Link> */}
+                                    <Button style={{ width: "10px" }} variant="link" onClick={this.handleCreate}><FontAwesomeIcon icon={faUserPlus} color="White" /></Button>
                                 </div>
                                 <Table stripped bordered hover>
 
