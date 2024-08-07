@@ -95,10 +95,12 @@ class GroupSearch extends Component {
         }).then((result) => {
             result.json().then(resp => {
                 console.warn(resp)
-                alert("Message has beeb sent")
+                // alert("Message has beeb sent")
+                this.getChatMessages(this.state.FriendId,this.state.FriendName)
             })
 
         })
+        
     }
 
     render() {

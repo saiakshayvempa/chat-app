@@ -13,7 +13,7 @@ import {
 
 // import NavBarMenu from "./NavBarMenu"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faList, faHome, faPlus, faSearch, faNewspaper, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faList, faHome,faComments,faComment, faRightToBracket,faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 class NavBarMenu extends Component {
 
@@ -21,21 +21,21 @@ class NavBarMenu extends Component {
     return (
       <div>
         <Navbar style={{ height: "10vh" }} expand="lg" className="bg-body-tertiary">
-          <Container>
+          <Container fluid>
             <Navbar.Brand href="#home">Chat-App</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <Nav.Link href="#home"><Link to="/"><FontAwesomeIcon icon={faHome} color="Black" />Home</Link></Nav.Link>
-                <Nav.Link href="#list"><Link to="/list"><FontAwesomeIcon icon={faList} color="Black" />Groups</Link></Nav.Link>
-                <Nav.Link href="#search"><Link to="/search"><FontAwesomeIcon icon={faSearch} color="Black" />People</Link></Nav.Link>
-                <Nav.Link href="#GroupChat"><Link to="/GroupChat"><FontAwesomeIcon icon={faSearch} color="Black" />GroupChats</Link></Nav.Link>
+              <Nav className="me-auto w-100">
+                <Nav.Link  href="#home"><Link className='nav-link' to="/"><FontAwesomeIcon icon={faHome} color="Black" />Home</Link></Nav.Link>
+                <Nav.Link href="#list"><Link className='nav-link'to="/list"><FontAwesomeIcon icon={faList} color="Black" />Groups</Link></Nav.Link>
+                <Nav.Link href="#search"><Link className='nav-link'to="/search"><FontAwesomeIcon icon={faComment} color="Black" />People</Link></Nav.Link>
+                <Nav.Link href="#GroupChat"><Link className='nav-link' to="/GroupChat"><FontAwesomeIcon icon={faComments} color="Black" />GroupChats</Link></Nav.Link>
                 {/* <Nav.Link href="#signin"><Link to="/signin"><FontAwesomeIcon icon={faSearch} color ="Black"/>SignIn</Link></Nav.Link> */}
                 {
                   localStorage.getItem('login') ?
-                    <Nav.Link href="#logout"><Link to="/logout"><FontAwesomeIcon icon={faUser} color="Black" />Logout</Link></Nav.Link>
+                    <Nav.Link style={{marginLeft:'auto'}}href="#logout"><Link className='nav-link' to="/logout"><FontAwesomeIcon icon={faRightFromBracket} color="Black" />Logout</Link></Nav.Link>
                     :
-                    <Nav.Link href="#login"><Link to="/login"><FontAwesomeIcon icon={faUser} color="Black" />Login</Link></Nav.Link>
+                    <Nav.Link style={{marginLeft:'auto'}}href="#login"><Link className='nav-link' to="/login"><FontAwesomeIcon icon={faRightToBracket} color="Black" />Login</Link></Nav.Link>
 
                 }
 
